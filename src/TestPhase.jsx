@@ -46,7 +46,7 @@ const TestPhase = (props) => {
         Data.trialData.push({
             trialNumber: props.testNumber,
         })
-        console.log(Data);
+        //console.log(Data);
         // increment the trial number so as to go to the next trial
         props.incrementTest(props.testNumber)
     }
