@@ -5,7 +5,7 @@
 // import external components and methods
 import { textStyle, buttonStyle } from './dimensions';
 import { useState, useEffect } from 'react';
-import instpicture from './instructions picture.svg';
+import intro_pic from './intro_pic.svg';
 import Data from './Data';
 import './instructions.css';
 
@@ -53,7 +53,7 @@ const TaskTutorialOne = (props) => {
      You would be unable to complete the experiment.</p>
     const text = <div>
         <p>Thank you for taking part in our study!</p>
-        <p>You will read a few simple stories, and tell us what you think about what happened.</p>
+        <p>You will read a simple story, and tell us what you think about what happened.</p>
         </div>;
 
 
@@ -98,38 +98,30 @@ const TaskTutorialTwo = (props) => {
 
 
     const text = <div>
-            <p>There is a machine that distributes gumballs.
-                 It contains two types of gumballs: <span style={{color:'green'}}><b>green</b></span> and <span style={{color:'purple'}}><b>purple</b></span>.</p>
-                 <p>The machine has two containers: one container has mostly <span style={{color:'green'}}><b>green</b></span> gumballs, the other has mostly <span style={{color:'purple'}}><b>purple</b></span> gumballs.</p>
-    <p>If the user wants a gumball, they need to press a button. If you press the button labeled 'G', you get a gumball selected at random from the machine that has mostly <span style={{color:'green'}}><b>green</b></span> gumballs.
-        If you press the 'P' button, you get a gumball selected at random from the machine with mostly <span style={{color:'purple'}}><b>purple</b></span> gumballs.
+            <p>Before we start the task, please take a moment to answer a few questions.
+                Suppose a ball is selected at random from the container below:
     </p>
     
     </div>
 
-    const pic = <img style={{width:'60vw', height:'auto'}} src={instpicture}/>
-
-    const mixupText = <p>Sometimes there are mix-ups and the machine selects a gumball from the wrong container. But most of the time the machine works correctly.</p>
-
-    const questionsIntro = <p>Please answer a few questions to make sure you understand:</p>
+    const pic = <img style={{width:'20vw', height:'auto'}} src={intro_pic}/>
 
     const questions = <form>
-        <label for="likely">If the user presses the 'G' button, what is most likely? </label>
+        <label for="likely">What is most likely? </label>
 
         <select name="likely" id="likely" onChange={(e) => handleLikely(e)}>
             <option value="NA">  </option>
-            <option value="green">They will get a green gumball</option>
-            <option value="purple">They will get a purple gumball</option>
+            <option value="green">A green ball will be selected</option>
+            <option value="purple">A purple ball will be selected</option>
             <option value="both">Both outcomes are equally likely</option>
         </select>
         <br></br>
-        <label for="guaranteed">Users are guaranteed to get a gumball of the color they want. </label>
+        <label for="guaranteed">Can the outcome be predicted with 100% certainty? </label>
 
         <select name="guaranteed" id="guaranteed" onChange={(e) => handleGuaranteed(e)}>
             <option value="NA">  </option>
-            <option value="true">True</option>
-            <option value="false">False</option>
-            <option value="notenough">Not enough information given</option>
+            <option value="true">Yes</option>
+            <option value="false">No</option>
         </select>
         <br></br>
         <br></br>
@@ -143,8 +135,6 @@ const TaskTutorialTwo = (props) => {
         <div style={textStyle}>
             {text}
             {pic}
-            {mixupText}
-            {questionsIntro}
             {questions}
             {nextPageButton}
         </div>

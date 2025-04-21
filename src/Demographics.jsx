@@ -35,7 +35,7 @@ const DemographicsOne = (props) => {
         <div style={textStyle}>
             <p>Thank you for completing the task!</p>
             <p>Can you tell us a few words about how you made your 
-                judgments? <span style={{color:'white'}}>你最爱的菜是什么?</span>
+                judgments? <br></br><span style={{color:'white'}}>你最爱的菜是什么?</span>
             </p>
             <br></br>
 

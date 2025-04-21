@@ -1,11 +1,15 @@
 //this object records the participant data
 
+import { questionOrder } from "./randomized-parameters";
+
 const Data = {
   //the participant's Prolific ID
   prolificId: [],
   // the comprehension questions
   compQuestions: [],
-  //the attention check during the instructions trial
+  // question order
+  questionOrder: questionOrder,
+  // the attention check during the instructions trial
   attnCheck: [],
   //the data describing a particular trial
   trialData: [],

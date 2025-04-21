@@ -4,8 +4,8 @@ import { textStyle, buttonStyle } from './dimensions';
 import { questionOrder } from './randomized-parameters';
 import Likert from 'react-likert-scale';
 import { likertChoicesTest } from './likertScale';
-import normal from './normal.svg';
-import deviant from './deviant.svg';
+import kraemer_a from './kraemer_a.svg';
+import kraemer_b from './kraemer_b.svg';
 
 import Data from './Data';
 
@@ -14,15 +14,16 @@ const TestPhase = (props) => {
     // import some relevant props
     const testData = props.testData;
     const name=testData.name;
-    const process=testData.process;
-    const knowledge=testData.knowledge;
+    const dv=testData.dv;
+    
 
     // initialize variables
     const [responseIntentionality, setResponseIntentionality] = useState(0);
     const [responseCausation, setResponseCausation] = useState(0);
-    const [responseProbRaising, setResponseProbRaising] = useState(0);
     const [responseKnowHow, setResponseKnowHow] = useState(0);
+    const [responseProbRaising, setResponseProbRaising] = useState(0);
     const [displayButton, setDisplayButton] = useState(0);
+
     
 
     useEffect(() => {
@@ -38,16 +39,14 @@ const TestPhase = (props) => {
             trialNumber: props.testNumber,
             intentionality: responseIntentionality,
             causation: responseCausation,
+            knowHow: responseKnowHow,
             probRaising: responseProbRaising,
-            knowHow: responseKnowHow
+            condition: dv
         })
         Data.trialData.push({
             trialNumber: props.testNumber,
-            knowledge: knowledge,
-            process: process,
-            name: name
         })
-        //console.log(Data);
+        console.log(Data);
         // increment the trial number so as to go to the next trial
         props.incrementTest(props.testNumber)
     }
@@ -63,25 +62,28 @@ const TestPhase = (props) => {
     
     // text displaying information about what happens in the story
 
-    const textknowledge = <p>{name} {knowledge === 1 ? <b>knows</b> :
-    knowledge === 0 ? <b>does NOT know</b> : NaN } what the buttons do. She wants a <span style={{color:'green'}}><b>green</b></span> gumball.</p>;
+    const text1 = <div >
+        <p>Sally is a contestant on a game show. In the game, Sally is given the opportunity to push a button. 
+         If she pushes the button, a machine will select a ball at random from a container. 
+        </p>
+        <p>The container has a lot of <span style={{color:'purple'}}><b>purple</b></span> balls and only a few <span style={{color:'green'}}><b>green</b></span> balls. 
+        If Sally gets a <span style={{color:'green'}}><b>green</b></span> ball, she wins a brand new <b>car</b>. If she gets a <span style={{color:'purple'}}><b>purple</b></span> ball, she wins nothing.</p>
+    </div>;
 
-    const textchoice = 
-    <p>{knowledge===1 ? <span>Because she knows how the buttons work, {name} </span> : 
-        knowledge===0 ? <span>{name} chooses a button at random: she </span> : NaN} 
-    presses the 'G' button. </p>
-    const textprocess = <p>{process==='normal' ? <span>The button works normally</span> :
-    process==='deviant' ? <span>There is a mix-up</span> : NaN}, and the machine selects randomly
-     from the container with mostly {process==='normal' ? <span style={{color:'green'}}><b>green</b></span> : 
-     process === 'deviant' ? <span style={{color:'purple'}}><b>purple</b></span> : NaN} gumballs.</p>
-    const textoutcome = <p>{name} gets a <span style={{color:'green'}}><b>green</b></span> gumball.</p>;
-    
     // the picture
-    const pic = process === 'normal' ?
-    <img style={{width:'60vw', height:'auto'}} src={normal}/> :
-    process === 'deviant' ? 
-    <img style={{width:'60vw', height:'auto'}} src={deviant}/> : NaN;
+    const pic_a = 
+    <img style={{width:'20vw', height:'auto'}} src={kraemer_a}/>;
 
+    const text2 = <div>
+        <p>Sally knows that she will get a brand new <b>car</b> if she gets a <span style={{color:'green'}}><b>green</b></span> ball. 
+        She really wants to win the <b>car</b>, so she really wants to get a <span style={{color:'green'}}><b>green</b></span> ball.<br></br>
+             Sally pushes the button. The machine selects a ball at random. To {name}'s great satisfaction, 
+             it is a <span style={{color:'green'}}><b>green</b></span> ball, and she wins the <b>car</b>!<br></br></p>
+    </div>;
+
+
+    const pic_b = 
+    <img style={{width:'40vw', height:'auto'}} src={kraemer_b}/>;
 
     //the likert scale for each question
 
@@ -107,16 +109,6 @@ const TestPhase = (props) => {
         id: 'questionCausation',
     };
 
-    const likertOptionsProbRaising =  {
-        question: "",
-        responses: likertChoicesTest,
-        //keeps track of the last response by the participant
-        onChange: val => {
-            setResponseProbRaising(val.value);
-            setDisplayButton(true);
-        },
-        id: 'questionProbRaising',
-    };
 
     const likertOptionsKnowHow =  {
         question: "",
@@ -129,10 +121,21 @@ const TestPhase = (props) => {
         id: 'questionKnowHow',
     };
 
+    const likertOptionsProbRaising =  {
+        question: "",
+        responses: likertChoicesTest,
+        //keeps track of the last response by the participant
+        onChange: val => {
+            setResponseProbRaising(val.value);
+            setDisplayButton(true);
+        },
+        id: 'questionProbRaising',
+    };
+
      //the intentionality question 
     const intentionalityQuestion = <span>
     {/* <p>Please tell us how much you agree with the following statement:</p> */}
-    <h4>{name} intentionally got a green gumball.</h4>
+    <h4>{name} intentionally {dv==='means' ? 'got a green ball.' : dv==='ends' ? 'won the car.' : NaN}</h4>
     <span><Likert {...likertOptionsIntentionality} /></span>
     </span>;
 
@@ -140,17 +143,17 @@ const TestPhase = (props) => {
          statement{props.testNumber % 2 ? 's' : ''}:</p>;
 
     const causationQuestion =  <span>
-    <h4>{name} got a green gumball because she wanted to get a green gumball.</h4>
+    <h4>{name} {dv==='means' ? 'got a green ball' : dv==='ends' ? 'won the car' : NaN} because she wanted to {dv==='means' ? 'get a green ball.' : dv==='ends' ? 'win the car.' : NaN}</h4>
     <span><Likert {...likertOptionsCausation} /></span>
     </span>;
 
     const knowHowQuestion = <span>
-    <h4>{name} knows how to get a green gumball.</h4>
+    <h4>{name} knows how to {dv==='means' ? 'get a green ball.' : dv==='ends' ? 'win the car.' : NaN}</h4>
     <span><Likert {...likertOptionsKnowHow} /></span>
     </span>;
 
-    const probRaisingQuestion =  <span>
-    <h4>Pushing the 'G' button increased the probability of {name} getting a green gumball.</h4>
+    const probRaisingQuestion = <span>
+    <h4>Pushing the button increased the probability of {name} {dv==='means' ? 'getting a green ball.' : dv==='ends' ? 'winning the car.' : NaN}</h4>
     <span><Likert {...likertOptionsProbRaising} /></span>
     </span>;
 
@@ -160,8 +163,9 @@ const TestPhase = (props) => {
         let q = questionOrder[i];
         return(
             q==='causation' ? causationQuestion :
+            q==='knowHow' ? knowHowQuestion : 
             q==='probRaising' ? probRaisingQuestion :
-            q==='knowHow' ? knowHowQuestion : NaN
+            NaN
         )
     })
 
@@ -180,11 +184,10 @@ const TestPhase = (props) => {
     return (
         <div style={textStyle}>
             {textreminder}
-            {textknowledge}
-            {textchoice}
-            {textprocess}
-            {pic}
-            {textoutcome}
+            {text1}
+            {pic_a}
+            {text2}
+            {pic_b}
             {questionIntro}
             {questions}
             {nextPageButton}

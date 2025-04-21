@@ -6,7 +6,7 @@ const Transition = (props) => {
         props.setCurrentPhase("test")
     }
 
-    const text = <p>You will see four different people use the gumball machine. For each person, we will ask you a few questions about what you think. Please try to stay focused throughout the task!</p>;
+    const text = <p>You will now read a simple story and tell us what you think about what happened. </p>;
     const nextPageButton = <button style={buttonStyle} onClick={() => handleClick()}>Start the study</button>;
 
     return (
